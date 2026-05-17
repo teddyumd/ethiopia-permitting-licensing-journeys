@@ -85,7 +85,7 @@
 				<div>
 					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Jurisdiction</h3>
 					<div class="flex flex-wrap gap-2">
-						{#each [['federal', 'Federal'], ['state', 'State'], ['local', 'Local']] as [id, label]}
+						{#each [['federal', 'Federal'], ['state', 'City / Sub-city'], ['local', 'Private / Internal']] as [id, label]}
 							<button
 								class="px-3 py-1.5 font-mono text-[11px] tracking-wide transition-colors"
 								style="border: 1px solid {app.filterJurisdictions.includes(id) ? 'var(--ink)' : 'var(--muted)'}; background: {app.filterJurisdictions.includes(id) ? 'var(--ink)' : 'transparent'}; color: {app.filterJurisdictions.includes(id) ? 'var(--surface)' : 'var(--text)'};"
@@ -138,7 +138,7 @@
 				<span class="font-medium" style="color: var(--ink);">{app.journeys.length}</span>
 				<span class="uppercase tracking-[1.5px] ml-1">Journeys</span>
 				<span class="ml-1 opacity-40">|</span>
-				<span class="ml-1 uppercase tracking-[1.5px]">Select a journey to begin tracing</span>
+				<span class="ml-1 uppercase tracking-[1.5px]">Select a business journey to begin tracing</span>
 			</div>
 		</div>
 
