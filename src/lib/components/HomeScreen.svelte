@@ -34,17 +34,17 @@
 	<div class="w-full md:w-2/5 h-auto md:h-screen p-8 md:p-12 lg:p-16 flex flex-col shrink-0 overflow-y-auto" style="border-right: 1px solid var(--muted);">
 		<div class="space-y-8 max-w-md">
 			<h1 class="font-display text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight" style="color: var(--ink);">
-				Permit & License Journey Explorer
+				Ethiopia Permit & Licensing Journey Explorer
 			</h1>
 			<p class="font-body text-base leading-relaxed" style="color: var(--text);">
-				Starting a business, becoming licensed in a profession or building an addition to your home. Each one requires permits and licenses from multiple levels of government. These journeys map out what that process actually looks like for the people going through it. The steps are illustrative, but the complexity they represent is not.
+				Starting a business in Ethiopia often means moving through multiple offices, documents, approvals, and compliance steps before a person can legally operate. Whether someone is opening a consultancy, restaurant, pharmacy, clinic, retail shop, logistics company, or training center, the process can involve federal institutions, city and sub-city offices, tax authorities, sector regulators, banks, and professional competency requirements.
 			</p>
 			<div class="space-y-4">
 				<a href="{base}/methodology" class="font-mono text-xs uppercase tracking-[1.5px] underline hover:no-underline block" style="color: var(--text);">
-					How I mapped these journeys &rarr;
+					How these journeys were mapped &rarr;
 				</a>
 				<p class="font-body text-sm leading-relaxed" style="color: var(--text);">
-					I'm <a href="https://github.com/saz33m1" target="_blank" rel="noopener noreferrer" class="font-bold no-underline hover:underline" style="color: var(--ink);">Syed Azeem</a>, and I'm building open-source tools to make permitting and licensing less painful for state and local governments. If that resonates, I'd love to hear from you.
+					I’m <a href="https://github.com/teddyumd" target="_blank" rel="noopener noreferrer" class="font-bold no-underline hover:underline" style="color: var(--ink);">Tewodros Hailegeberel</a>, and I’m building this open-source Ethiopia Permit and Licensing Journey Explorer to help entrepreneurs, practitioners, policymakers, and digital government teams see where the process works, where it breaks down, and where better service design is needed. The journeys are illustrative and still being improved, so I welcome corrections and suggestions from people who have gone through these processes or work with the responsible offices.
 				</p>
 				<div class="flex flex-wrap gap-3 pt-1">
 					<a
@@ -52,10 +52,10 @@
 						class="px-4 py-2.5 font-mono text-[11px] uppercase tracking-[1.5px] no-underline transition-opacity hover:opacity-80"
 						style="background: var(--ink); color: var(--newsprint);"
 					>
-						Get in touch &rarr;
+						Share feedback &rarr;
 					</a>
 					<a
-						href="https://github.com/saz33m1/permitting-licensing-journey-viz"
+						href="https://github.com/teddyumd/ethiopia-permitting-licensing-journeys"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="cta-outline px-4 py-2.5 font-mono text-[11px] uppercase tracking-[1.5px] no-underline transition-colors"
