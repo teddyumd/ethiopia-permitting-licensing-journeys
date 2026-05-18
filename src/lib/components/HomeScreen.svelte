@@ -34,17 +34,17 @@
 	<div class="w-full md:w-2/5 h-auto md:h-screen p-8 md:p-12 lg:p-16 flex flex-col shrink-0 overflow-y-auto" style="border-right: 1px solid var(--muted);">
 		<div class="space-y-8 max-w-md">
 			<h1 class="font-display text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight" style="color: var(--ink);">
-				Ethiopia Permit & Licensing Journey Explorer
+				Ethiopia Permit & Public Service Journey Explorer
 			</h1>
 			<p class="font-body text-base leading-relaxed" style="color: var(--text);">
-				Starting a business in Ethiopia often means moving through multiple offices, documents, approvals, and compliance steps before a person can legally operate. Whether someone is opening a consultancy, restaurant, pharmacy, clinic, retail shop, logistics company, or training center, the process can involve federal institutions, city and sub-city offices, tax authorities, sector regulators, banks, and professional competency requirements.
+				This explorer maps common business and individual public-service journeys in Ethiopia. Some journeys focus on starting and licensing a business, such as opening a consultancy, restaurant, pharmacy, clinic, retail shop, or logistics company. Others focus on everyday services individuals may need, such as opening a Fayda account, paying rental income tax, buying property, opening a bank account, registering a vehicle, getting a passport, or connecting utilities.
 			</p>
 			<div class="space-y-4">
 				<a href="{base}/methodology" class="font-mono text-xs uppercase tracking-[1.5px] underline hover:no-underline block" style="color: var(--text);">
 					How these journeys were mapped &rarr;
 				</a>
 				<p class="font-body text-sm leading-relaxed" style="color: var(--text);">
-					I’m <a href="https://github.com/teddyumd" target="_blank" rel="noopener noreferrer" class="font-bold no-underline hover:underline" style="color: var(--ink);">Tewodros Hailegeberel</a>, and I’m building this open-source Ethiopia Permit and Licensing Journey Explorer to help entrepreneurs, practitioners, policymakers, and digital government teams see where the process works, where it breaks down, and where better service design is needed. The journeys are illustrative and still being improved, so I welcome corrections and suggestions from people who have gone through these processes or work with the responsible offices.
+					I’m <a href="https://github.com/teddyumd" target="_blank" rel="noopener noreferrer" class="font-bold no-underline hover:underline" style="color: var(--ink);">Tewodros Hailegeberel</a>, and I’m building this open-source Ethiopia Permit and Public Service Journey Explorer to help people, entrepreneurs, practitioners, policymakers, and digital government teams understand how public service processes actually work. The journeys are illustrative and still being improved, so I welcome corrections from people who have gone through these processes or work with the responsible offices.
 				</p>
 				<div class="flex flex-wrap gap-3 pt-1">
 					<a
