@@ -29,8 +29,8 @@
 	const sourceCards: SourceCard[] = [
 		...manifest.datasets.map((d) => ({ name: d.name, desc: d.description, url: d.url })),
 		{
-			name: 'Municipal Codes',
-			desc: 'Common local permitting patterns for construction, land use, events',
+			name: 'Lived Experience & Practitioner Feedback',
+			desc: 'Corrections from people who have completed or supported Ethiopia public-service journeys',
 			url: null
 		}
 	];
@@ -39,7 +39,7 @@
 
 	const heroCounters = $derived([
 		{ value: data.stats.journeys, label: 'Journeys' },
-		{ value: data.stats.nodes, label: 'PLC Types' },
+		{ value: data.stats.nodes, label: 'Service Steps' },
 		{ value: data.stats.edges.total, label: 'Dependency Edges' },
 		{ value: data.stats.gotchas.total, label: 'Annotated Gotchas' },
 		{ value: data.stats.references, label: 'Source Citations' }
@@ -47,7 +47,7 @@
 </script>
 
 <svelte:head>
-	<title>Methodology – Permit & License Journey Explorer</title>
+	<title>Methodology - Ethiopia Permit & Public Service Journey Explorer</title>
 </svelte:head>
 
 <!-- HERO -->
@@ -61,10 +61,10 @@
 				How I Mapped<br>the User Journeys
 			</h1>
 			<p class="font-body text-lg md:text-xl leading-relaxed max-w-[600px] opacity-70 mb-4">
-				Behind each journey is someone trying to start a business, build a home, or earn a living. These journey maps reflect the complexity and intertwined paths real humans have to navigate.
+				This is a draft public-service journey mapping tool for Ethiopia. It covers both business journeys and individual public-service journeys, mapped from the user's point of view rather than by government hierarchy.
 			</p>
 			<p class="font-mono text-[10px] uppercase tracking-[2px] opacity-50 mb-12 md:mb-16">
-				PLC &mdash; Permitting, Licensing &amp; Certification
+				Draft dataset &mdash; under verification
 			</p>
 		</div>
 		<!-- Abstract dataset schematic -->
@@ -128,11 +128,11 @@
 			<!-- Visual: step sequence -->
 			<div class="flex flex-col items-start gap-0">
 				{#each [
-					{ label: 'Entity Formation', color: 'var(--state)', sub: 'Business Registration, EIN' },
-					{ label: 'Licenses & Permits', color: 'var(--federal)', sub: 'Professional, Industry, Federal' },
-					{ label: 'Zoning & Land Use', color: 'var(--local)', sub: 'Zoning Approval, Special Use' },
-					{ label: 'Build & Inspect', color: 'var(--local)', sub: 'Building Permit, Fire, Health' },
-					{ label: 'Open for Business', color: 'var(--accent)', sub: 'Business License, Signage' }
+					{ label: 'Need or Trigger', color: 'var(--state)', sub: 'Business launch, identity, tax, property, utility' },
+					{ label: 'Prepare Requirements', color: 'var(--federal)', sub: 'Documents, prerequisites, accounts, prior approvals' },
+					{ label: 'Submit to Office', color: 'var(--local)', sub: 'Online portal, counter visit, sector office, sub-city' },
+					{ label: 'Review & Follow-up', color: 'var(--local)', sub: 'Verification, inspection, payment, corrections' },
+					{ label: 'Receive Service', color: 'var(--accent)', sub: 'Permit, license, certificate, account, connection' }
 				] as step, i}
 					<div class="flex items-center gap-4">
 						<div class="w-10 h-10 flex items-center justify-center font-mono text-sm font-bold shrink-0" style="background: {step.color}; color: var(--newsprint);">
@@ -157,10 +157,10 @@
 					Dependency, not jurisdiction
 				</h2>
 				<p class="font-body text-base leading-relaxed mb-4" style="color: var(--text);">
-					Steps are ordered by when they happen in practice. You form your business entity before you apply for a liquor license. You get zoning approval before you pull a building permit. You pass your fire inspection before you receive a certificate of occupancy.
+					Steps are ordered by what the applicant has to do next, not by how government offices are organized. A journey may cross federal, regional, city, sub-city, sector regulator, bank, utility, or internal office boundaries, but the map follows the user's path through the service.
 				</p>
 				<p class="font-body text-base leading-relaxed" style="color: var(--text);">
-					Steps are sequenced by dependency. Each one unlocks the next, regardless of which level of government issued it.
+					Steps are sequenced by dependency and practical order. Some steps unlock the next step, some can happen in parallel, and some may vary by office, sub-city, sector, or current implementation.
 				</p>
 			</div>
 		</div>
@@ -202,10 +202,10 @@
 		</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0" style="border: 1px solid var(--ink);">
 			{#each [
-				{ num: '01', name: 'Preparation', desc: 'Entity formation, tax registration, insurance', examples: ['Business Registration', 'EIN Registration', 'State Tax Registration'] },
-				{ num: '02', name: 'Application', desc: 'Formal permits and professional credentials', examples: ['Health Dept License', 'Liquor License', 'Contractor License'] },
-				{ num: '03', name: 'Inspection', desc: 'Physical compliance and site approvals', examples: ['Zoning Approval', 'Building Permit', 'Fire Inspection'] },
-				{ num: '04', name: 'Active', desc: 'Operational licenses and ongoing obligations', examples: ['Business License', 'Signage Permit', 'Entertainment License'] }
+				{ num: '01', name: 'Preparation', desc: 'Gather information, documents, accounts, and prerequisites', examples: ['Fayda ID', 'Tax Registration', 'Business Name'] },
+				{ num: '02', name: 'Application', desc: 'Submit the request through a portal or office counter', examples: ['License Application', 'Passport Request', 'Utility Request'] },
+				{ num: '03', name: 'Verification', desc: 'Office review, document checks, inspections, or payment confirmation', examples: ['Document Check', 'Site Visit', 'Fee Payment'] },
+				{ num: '04', name: 'Completion', desc: 'Receive the service and understand renewals or follow-up obligations', examples: ['Certificate', 'Account Opened', 'Service Connected'] }
 			] as phase, i}
 				<div class="p-6 flex flex-col" style="{i < 3 ? 'border-right: 1px solid var(--muted);' : ''} border-bottom: 1px solid var(--muted);">
 					<span class="font-mono text-4xl font-bold block mb-1" style="color: var(--muted);">{phase.num}</span>
@@ -230,18 +230,18 @@
 		<div class="mb-10" style="border-left: 4px solid var(--accent); padding-left: 2rem;">
 			<span class="font-mono text-[10px] uppercase tracking-[2px] block mb-4" style="color: var(--accent);">Ongoing</span>
 			<h2 class="font-display text-3xl md:text-4xl leading-[1.1] tracking-tight mb-6" style="color: var(--ink);">
-				Not every step is one-and-done
+				Some details change over time
 			</h2>
 			<p class="font-body text-base leading-relaxed max-w-[720px]" style="color: var(--text);">
-				Many permits and licenses must be renewed on a regular cycle. These steps are marked with a renewal indicator in the matrix. They appear at the point in the journey where they are first established, but they continue for as long as the business or license is active.
+				Many public-service steps depend on current implementation, local office practice, sector rules, and whether a service is handled online, in person, or both. Some entries are marked as draft or need verification because the process may differ by office, sub-city, sector, or date.
 			</p>
 		</div>
 		<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
 			{#each [
-				{ term: 'Annual', examples: 'Business License, Fire Inspection' },
-				{ term: 'Every 2 Years', examples: 'Liquor License, Professional License' },
-				{ term: 'Every 5 Years', examples: 'EPA Permit, Mining Permit' },
-				{ term: 'Biennial', examples: 'FDA Registration, DOT Authority' }
+				{ term: 'Draft', examples: 'Step or office needs confirmation' },
+				{ term: 'Varies by office', examples: 'Sub-city, branch, or counter practice' },
+				{ term: 'May change', examples: 'Fees, documents, and timelines' },
+				{ term: 'Needs feedback', examples: 'Lived experience improves the map' }
 			] as item}
 				<div class="px-4 py-3" style="border: 1px solid var(--ink);">
 					<div class="flex items-center gap-2 mb-1">
@@ -262,14 +262,14 @@
 			Where journeys get stuck
 		</h2>
 		<p class="font-body text-base leading-relaxed max-w-[720px] mb-10" style="color: var(--text);">
-			Each journey includes two to four annotated gotchas — concrete friction points where applicants commonly stall, get rejected, or hit unexpected requirements. Every gotcha is tied to a specific step and backed by a source.
+			Each journey may include annotated friction points where applicants commonly stall, get rejected, or hit unexpected requirements. These notes are illustrative and may need verification against current practice.
 		</p>
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 mb-12" style="border: 1px solid var(--ink);">
 			{#each [
 				{ value: data.stats.gotchas.total, label: 'Total Gotchas', color: 'var(--ink)' },
-				{ value: data.stats.gotchas.major, label: 'Major · multi-week delays', color: 'var(--severity-major)' },
-				{ value: data.stats.gotchas.minor, label: 'Minor · hassle, rarely blocks', color: 'var(--text)' }
+				{ value: data.stats.gotchas.major, label: 'Major - likely delays', color: 'var(--severity-major)' },
+				{ value: data.stats.gotchas.minor, label: 'Minor - confusing or inconvenient', color: 'var(--text)' }
 			] as stat, i}
 				<div class="p-6" style="{i < 2 ? 'border-right: 1px solid var(--muted);' : ''}">
 					<span class="font-mono text-4xl md:text-5xl font-bold block leading-none" style="color: {stat.color};">{fmt.format(stat.value)}</span>
@@ -305,7 +305,7 @@
 		</div>
 
 		<p class="font-body text-sm italic mt-8 max-w-[720px]" style="color: var(--text);">
-			Major gotchas commonly cost weeks. Minor gotchas are hassle, not blockers. Tap any step in a journey to see its gotchas in context.
+			These annotations are signals for review, not final judgments. Tap any step in a journey to see notes in context and share corrections if your experience differs.
 		</p>
 	</div>
 </section>
@@ -315,17 +315,17 @@
 	<div class="max-w-[1200px] mx-auto">
 		<span class="font-mono text-[10px] uppercase tracking-[2px] block mb-4" style="color: var(--text);">Citations</span>
 		<h2 class="font-display text-3xl md:text-4xl leading-[1.1] tracking-tight mb-6" style="color: var(--ink);">
-			Every step traces back to an authority
+			Sources and verification status
 		</h2>
 		<p class="font-body text-base leading-relaxed max-w-[720px] mb-10" style="color: var(--text);">
-			Citations exist at three layers — every PLC type has one, every gotcha has its own, and every journey carries three to six broad references grouped by type.
+			References are included where available, but this is still a draft map. Some steps are based on official pages, published guidance, or practical process research, while others need confirmation from people with lived experience or professional knowledge.
 		</p>
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-0 mb-12" style="border: 1px solid var(--ink); background: var(--surface);">
 			{#each [
-				{ count: data.stats.nodes, label: 'Node Sources', desc: 'One authoritative reference per PLC type (IRS for EIN, FDA for food registration, ICC for building permits). Visible on every step of every journey.' },
-				{ count: data.stats.gotchas.total, label: 'Gotcha Sources', desc: 'Each friction point cites the regulation, statute, or guide that documents it.' },
-				{ count: data.stats.references, label: 'Journey References', desc: 'Three to six per journey, grouped as regulatory / guide / dataset, surfaced in the Sources panel beneath each matrix.' }
+				{ count: data.stats.nodes, label: 'Step Records', desc: 'Reusable public-service steps with office, phase, timing, fee, and verification notes where known.' },
+				{ count: data.stats.gotchas.total, label: 'Friction Notes', desc: 'Known or suspected pain points that should be checked against current office practice.' },
+				{ count: data.stats.references, label: 'Journey References', desc: 'Sources and broad references surfaced in the Sources panel beneath each journey matrix.' }
 			] as layer, i}
 				<div class="p-6 flex flex-col gap-3" style="{i < 2 ? 'border-right: 1px solid var(--muted);' : ''}">
 					<div class="flex items-baseline gap-3">
@@ -403,12 +403,12 @@
 			<span class="font-mono text-[10px] uppercase tracking-[2px] block mb-6" style="color: var(--state);">What this is</span>
 			<ul class="space-y-4">
 				{#each [
-					'A representative model of how PLC requirements distribute across jurisdiction levels',
-					'Ordered by real-world dependency chains, not bureaucratic hierarchy',
-					'Annotated with real-world friction points, each backed by a source citation',
-					'Every step sourced to a government, industry, or standards body reference',
-					'An abstraction useful for stakeholder presentations and system design',
-					'Directionally accurate for any US jurisdiction'
+					'A draft map of Ethiopia business and individual public-service journeys',
+					'Ordered from the user point of view, not by government hierarchy',
+					'Designed to make complex public-service processes easier to understand, verify, improve, and eventually digitize',
+					'A place to collect corrections from people with lived experience or professional knowledge',
+					'A practical model that can evolve as offices, portals, and implementation details change',
+					'A tool for comparison, research, and service improvement'
 				] as item}
 					<li class="flex gap-3">
 						<span class="font-mono text-sm font-bold shrink-0 mt-0.5" style="color: var(--state);">+</span>
@@ -422,10 +422,10 @@
 			<span class="font-mono text-[10px] uppercase tracking-[2px] block mb-6" style="color: var(--accent);">What this is not</span>
 			<ul class="space-y-4">
 				{#each [
-					'A legal compliance guide for any specific jurisdiction',
-					'Exhaustive — real jurisdictions have many additional niche permits',
-					'Validated against a specific state or city\'s actual requirements',
-					'A substitute for consulting your local permitting office'
+					'Legal advice or an official government guide',
+					'Guaranteed to match every office, sub-city, sector, or current implementation',
+					'Complete or final; some steps are marked draft or need verification',
+					'A substitute for checking with the responsible office before acting'
 				] as item}
 					<li class="flex gap-3">
 						<span class="font-mono text-sm font-bold shrink-0 mt-0.5" style="color: var(--accent);">&ndash;</span>
