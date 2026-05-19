@@ -61,17 +61,38 @@ test.describe('Home screen', () => {
 	test('audience filter switches between all, business, and individual journeys', async ({ page }) => {
 		await page.goto('/');
 
+		await expect(page.getByRole('button', { name: 'Professional Services', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Individual Services - Tax', exact: true })).toBeVisible();
+
 		await page.getByRole('button', { name: 'Business', exact: true }).click();
 		await expect(page.locator('text=/^\\s*11\\s*$/').first()).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Professional Services', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Individual Services - Tax', exact: true })).not.toBeVisible();
 		await expect(page.getByRole('button', { name: /Clear all filters/i })).toBeVisible();
 
 		await page.getByRole('button', { name: /Clear all filters/i }).click();
 		await expect(page.locator('text=/^\\s*27\\s*$/').first()).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Professional Services', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Individual Services - Tax', exact: true })).toBeVisible();
 
 		await page.getByRole('button', { name: 'Individual', exact: true }).click();
 		await expect(page.locator('text=/^\\s*16\\s*$/').first()).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Individual Services - Tax', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Professional Services', exact: true })).not.toBeVisible();
 
 		await page.getByRole('button', { name: 'All', exact: true }).click();
 		await expect(page.locator('text=/^\\s*27\\s*$/').first()).toBeVisible();
+	});
+
+	test('audience changes remove unavailable category filters', async ({ page }) => {
+		await page.goto('/');
+
+		await page.getByRole('button', { name: 'Individual', exact: true }).click();
+		await page.getByRole('button', { name: 'Individual Services - Tax', exact: true }).click();
+		await expect(page.locator('text=/^\\s*2\\s*$/').first()).toBeVisible();
+
+		await page.getByRole('button', { name: 'Business', exact: true }).click();
+		await expect(page.getByRole('button', { name: 'Individual Services - Tax', exact: true })).not.toBeVisible();
+		await expect(page.locator('text=/^\\s*11\\s*$/').first()).toBeVisible();
 	});
 });

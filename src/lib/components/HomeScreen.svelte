@@ -28,7 +28,7 @@
 
 	let audienceFilter = $state<'all' | 'business' | 'individual'>('all');
 
-	const filtered = $derived(app.filteredJourneys.filter((journey) => {
+	const audienceJourneys = $derived(app.journeys.filter((journey) => {
 		if (audienceFilter === 'individual') {
 			return journey.cat.startsWith('individual-services-');
 		}
@@ -37,7 +37,17 @@
 		}
 		return true;
 	}));
+	const availableCategoryIds = $derived(new Set(audienceJourneys.map((journey) => journey.cat)));
+	const availableCategories = $derived(app.categories.filter((cat) => availableCategoryIds.has(cat.id)));
+	const filtered = $derived(app.filteredJourneys.filter((journey) => availableCategoryIds.has(journey.cat)));
 	const hasFilters = $derived(app.filterJurisdictions.length > 0 || app.filterCategories.length > 0 || app.filterSearch.length > 0 || audienceFilter !== 'all');
+
+	$effect(() => {
+		const nextCategories = app.filterCategories.filter((cat) => availableCategoryIds.has(cat));
+		if (nextCategories.length !== app.filterCategories.length) {
+			app.filterCategories = nextCategories;
+		}
+	});
 </script>
 
 <div class="flex-1 overflow-hidden flex flex-col md:flex-row" style="background: var(--newsprint);">
@@ -140,7 +150,7 @@
 				<div>
 					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Category</h3>
 					<div class="flex flex-wrap gap-1.5">
-						{#each app.categories as cat}
+						{#each availableCategories as cat}
 							<button
 								class="px-2.5 py-1 font-mono text-[10px] tracking-wide transition-colors"
 								style="border: 1px solid {app.filterCategories.includes(cat.id) ? 'var(--ink)' : 'var(--muted)'}; background: {app.filterCategories.includes(cat.id) ? 'var(--ink)' : 'transparent'}; color: {app.filterCategories.includes(cat.id) ? 'var(--surface)' : 'var(--text)'};"
