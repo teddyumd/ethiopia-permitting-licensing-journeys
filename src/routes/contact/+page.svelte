@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { page } from '$app/state';
 
 	const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgoqvrrd';
 
@@ -10,6 +11,13 @@
 	let message = $state('');
 	let status = $state<'idle' | 'submitting' | 'success' | 'error'>('idle');
 	let errorMessage = $state('Something went wrong while submitting your feedback. Please try again.');
+
+	$effect(() => {
+		const selectedJourney = page.url.searchParams.get('journey');
+		if (selectedJourney && !journey) {
+			journey = selectedJourney;
+		}
+	});
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
