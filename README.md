@@ -1,52 +1,108 @@
-# Permitting & Licensing Journey Explorer
+# Ethiopia Permit & Public Service Journey Explorer
 
-An interactive, editorial-grade dashboard mapping how common life and business journeys — opening a restaurant, becoming a nurse, building a home addition, hosting a street festival — require permits, licenses, and compliance steps scattered across **federal, state, and local government**.
+An interactive SvelteKit site for exploring how people and businesses move through permit, licensing, registration, tax, identity, property, transport, utility, and other public-service processes in Ethiopia.
 
-![Opening a restaurant — dependency view](media/restaurant-journey.gif)
+The project is meant to make service journeys easier to inspect, compare, and improve. It is especially useful for entrepreneurs, residents, practitioners, policymakers, and digital government teams who need a practical view of which offices, prerequisites, documents, dependencies, and process phases are involved.
 
-_Above: the "Open a Restaurant" journey in dependency view, tracing how twelve permits and licenses connect across federal, state, and local jurisdictions. A full-quality [MP4 version](media/restaurant-journey.mp4) is also available._
+## What The Site Maps
 
-**114 journeys** | **58 PLC types** | **15 categories** | **3 jurisdiction levels** | **4 phases**
+The explorer maps journeys as sequences of public-service steps. Each journey is connected to reusable process nodes, with metadata such as:
 
-## Stack
+- jurisdiction or office level
+- phase of the journey
+- responsible agency or office, where known
+- estimated timing, fees, renewal terms, and notes, where available
+- dependencies between steps
+- references and sources
 
-SvelteKit 2 · Svelte 5 (runes) · Vite 7 · TypeScript · Tailwind v4 · shadcn-svelte · GSAP.
+The interface supports searching, filtering by audience, filtering by jurisdiction, filtering by category, and opening individual journey maps.
 
-## Develop
+## Current Scope
+
+The current dataset contains 27 Ethiopia journeys:
+
+- 11 business journeys, such as restaurants, retail, consultancy, health, pharmacy, construction, logistics, technology, tourism, manufacturing, and education/training examples.
+- 16 individual public-service journeys, such as identity, tax, property, banking, insurance, transport, passport/travel, and utility-related services.
+
+The source data lives in [`static/data/journeys.json`](static/data/journeys.json). The app reads from this file at runtime.
+
+## Data Status
+
+The data is a draft and is still under verification.
+
+Some steps, office names, dependencies, fees, timelines, renewal rules, and source links may be incomplete, outdated, or different in practice across offices and locations. The site should be treated as an exploratory public-interest mapping tool, not as legal advice or an official government guide.
+
+## Contributing Corrections
+
+Practical feedback is welcome, especially from people who have gone through one of these journeys or work with the responsible offices.
+
+Useful corrections include:
+
+- missing steps
+- outdated information
+- office-specific differences
+- incorrect agencies, prerequisites, fees, or timelines
+- lived experience from completing a journey
+- better official sources or guidance links
+
+You can contribute by:
+
+- opening an issue in this repository
+- submitting a pull request with changes to [`static/data/journeys.json`](static/data/journeys.json)
+- using the contact page in the live site to share notes
+
+When possible, include the journey name, the specific step, the office or location, and a source or explanation.
+
+## Run Locally
+
+Install dependencies:
 
 ```bash
 npm install
-npm run dev          # vite dev server
-npm run build        # production build
-npm run preview      # preview the build
-npm run check        # svelte-check (type + diagnostics)
 ```
 
-## Data
+Start the development server:
 
-All journey data lives in [`static/data/journeys.json`](static/data/journeys.json):
-
-```
-jurisdictions  — federal, state, local
-categories     — 15 journey types (food, health, construction, …)
-plcNodes       — 58 permit/license/compliance node types, with phase + metadata
-journeys       — 114 journeys, each an ordered list of node IDs
+```bash
+npm run dev
 ```
 
-See [`DATA_COLLECTION.md`](DATA_COLLECTION.md) for research methodology and [`docs/prd.html`](docs/prd.html) for the product spec.
+Run checks and tests:
 
-## Deploy
+```bash
+npm run check
+npm test
+npm run test:e2e
+```
 
-Configured for **GitHub Pages** (fully static) via `@sveltejs/adapter-static`. A workflow at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds the site on every push to `master` and publishes it via the `actions/deploy-pages` action.
+Build and preview the static site:
 
-To enable it on a fresh fork:
+```bash
+npm run build
+npm run preview
+```
 
-1. In the repo settings, go to **Pages** → set **Source** to **GitHub Actions**.
-2. Push to `master` (or run the workflow manually from the Actions tab).
+## GitHub Pages Deployment
 
-The workflow sets `BASE_PATH=/<repo-name>` at build time so asset and route URLs resolve correctly under the `https://<user>.github.io/<repo-name>/` subpath. For a user/organization root site (`<user>.github.io`), leave `BASE_PATH` unset.
+This project is configured for GitHub Pages using `@sveltejs/adapter-static`.
 
-The `/journey/[id]` route is rendered client-side via the SPA fallback (`404.html`), so direct links to individual journeys load correctly on GitHub Pages.
+Deployment is handled by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
+
+1. The workflow runs on pushes to `master` or manual dispatch.
+2. GitHub Actions installs dependencies with `npm ci`.
+3. The site is built with `npm run build`.
+4. The generated static output in `build/` is uploaded as a Pages artifact.
+5. `actions/deploy-pages` publishes the site to GitHub Pages.
+
+The workflow sets `BASE_PATH=/${{ github.event.repository.name }}` during the build so routes and assets work under the repository subpath on GitHub Pages.
+
+Continuous integration is handled by [`.github/workflows/ci.yml`](.github/workflows/ci.yml). It runs type checking, unit/component tests, and Playwright e2e tests on pushes and pull requests to `master`.
+
+For a fresh fork, enable Pages in repository settings and set the Pages source to **GitHub Actions**.
+
+## Stack
+
+SvelteKit 2, Svelte 5, Vite, TypeScript, Tailwind CSS, shadcn-svelte, and Playwright.
 
 ## License
 
