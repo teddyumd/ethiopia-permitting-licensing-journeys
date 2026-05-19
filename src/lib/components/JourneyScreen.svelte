@@ -82,7 +82,7 @@
 		<div class="px-4 py-3 md:px-8 md:py-4 flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-6" style="border-bottom: 1px solid var(--muted);">
 			<div class="min-w-0">
 				<a href="{base}/" class="font-mono text-xs tracking-[1.5px] uppercase no-underline hover:underline" style="color: var(--text);">
-						Permit & License Journey Explorer
+						Ethiopia Permit & Public Service Journey Explorer
 					</a>
 				<h1 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mt-1 line-clamp-2" style="color: var(--ink);">
 					{journey.name}

@@ -95,9 +95,9 @@
 	let gridEl: HTMLDivElement | undefined = $state();
 
 	const jurLabels: Record<string, string> = {
-		federal: 'Federal',
-		state: 'State',
-		local: 'Local'
+		federal: 'Federal / National',
+		state: 'Regional / Sector regulator / TBD',
+		local: 'City / Sub-city / Internal / Private'
 	};
 
 	let realisticStatus = $state({

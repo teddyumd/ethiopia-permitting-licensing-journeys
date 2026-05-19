@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { app, JC } from '$lib/stores/app.svelte';
+	import { app } from '$lib/stores/app.svelte';
 	import JourneyRow from './JourneyRow.svelte';
 
 	function toggleJurisdiction(jur: string) {
@@ -44,7 +44,7 @@
 					How these journeys were mapped &rarr;
 				</a>
 				<p class="font-body text-sm leading-relaxed" style="color: var(--text);">
-					I’m <a href="https://github.com/teddyumd" target="_blank" rel="noopener noreferrer" class="font-bold no-underline hover:underline" style="color: var(--ink);">Tewodros Hailegeberel</a>, and I’m building this open-source Ethiopia Permit and Public Service Journey Explorer to help people, entrepreneurs, practitioners, policymakers, and digital government teams understand how public service processes actually work. The journeys are illustrative and still being improved, so I welcome corrections from people who have gone through these processes or work with the responsible offices.
+					I'm <a href="https://github.com/teddyumd" target="_blank" rel="noopener noreferrer" class="font-bold no-underline hover:underline" style="color: var(--ink);">Tewodros Hailegeberel</a>, and I'm building this open-source Ethiopia Permit and Public Service Journey Explorer to help people, entrepreneurs, practitioners, policymakers, and digital government teams understand how public service processes actually work. The journeys are illustrative and still being improved, so I welcome corrections from people who have gone through these processes or work with the responsible offices.
 				</p>
 				<div class="flex flex-wrap gap-3 pt-1">
 					<a
@@ -85,13 +85,13 @@
 				<div>
 					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Jurisdiction</h3>
 					<div class="flex flex-wrap gap-2">
-						{#each [['federal', 'Federal'], ['state', 'City / Sub-city'], ['local', 'Private / Internal']] as [id, label]}
+						{#each app.jurisdictions as jurisdiction (jurisdiction.id)}
 							<button
 								class="px-3 py-1.5 font-mono text-[11px] tracking-wide transition-colors"
-								style="border: 1px solid {app.filterJurisdictions.includes(id) ? 'var(--ink)' : 'var(--muted)'}; background: {app.filterJurisdictions.includes(id) ? 'var(--ink)' : 'transparent'}; color: {app.filterJurisdictions.includes(id) ? 'var(--surface)' : 'var(--text)'};"
-								onclick={() => toggleJurisdiction(id)}
+								style="border: 1px solid {app.filterJurisdictions.includes(jurisdiction.id) ? 'var(--ink)' : 'var(--muted)'}; background: {app.filterJurisdictions.includes(jurisdiction.id) ? 'var(--ink)' : 'transparent'}; color: {app.filterJurisdictions.includes(jurisdiction.id) ? 'var(--surface)' : 'var(--text)'};"
+								onclick={() => toggleJurisdiction(jurisdiction.id)}
 							>
-								{label}
+								{jurisdiction.name}
 							</button>
 						{/each}
 					</div>
@@ -138,7 +138,7 @@
 				<span class="font-medium" style="color: var(--ink);">{app.journeys.length}</span>
 				<span class="uppercase tracking-[1.5px] ml-1">Journeys</span>
 				<span class="ml-1 opacity-40">|</span>
-				<span class="ml-1 uppercase tracking-[1.5px]">Select a business journey to begin tracing</span>
+				<span class="ml-1 uppercase tracking-[1.5px]">Select a journey to begin tracing</span>
 			</div>
 		</div>
 

@@ -32,7 +32,7 @@
 </script>
 
 <svelte:head>
-	<title>{app.activeJourney ? `${app.activeJourney.name} – Permit & License Journey Explorer` : 'Permit & License Journey Explorer'}</title>
+	<title>{app.activeJourney ? `${app.activeJourney.name} - Ethiopia Permit & Public Service Journey Explorer` : 'Ethiopia Permit & Public Service Journey Explorer'}</title>
 </svelte:head>
 
 {#if app.activeJourney}

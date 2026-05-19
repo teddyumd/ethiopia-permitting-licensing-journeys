@@ -16,11 +16,11 @@ describe('journeys.json shape', () => {
 		expect(Array.isArray(data.journeys)).toBe(true);
 	});
 
-	it('matches documented counts (3 jurisdictions, 15 categories, 57 plcNodes, 114 journeys)', () => {
+	it('matches documented counts (3 jurisdictions, 20 categories, 377 plcNodes, 27 journeys)', () => {
 		expect(data.jurisdictions).toHaveLength(3);
-		expect(data.categories).toHaveLength(15);
-		expect(data.plcNodes).toHaveLength(57);
-		expect(data.journeys).toHaveLength(114);
+		expect(data.categories).toHaveLength(20);
+		expect(data.plcNodes).toHaveLength(377);
+		expect(data.journeys).toHaveLength(27);
 	});
 
 	it('uses exactly federal/state/local jurisdiction ids', () => {

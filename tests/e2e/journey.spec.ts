@@ -11,10 +11,10 @@ test.describe('Journey screen', () => {
 		await expect(page).toHaveURL(/\/journey\//);
 		await expect(page.getByRole('heading', { name: journeyName })).toBeVisible();
 
-		// Matrix has Federal / State / Local column headers
-		await expect(page.getByText('Federal', { exact: true }).first()).toBeVisible();
-		await expect(page.getByText('State', { exact: true }).first()).toBeVisible();
-		await expect(page.getByText('Local', { exact: true }).first()).toBeVisible();
+		// Matrix has Ethiopia dataset jurisdiction row headers
+		await expect(page.getByText('Federal / National', { exact: true }).first()).toBeVisible();
+		await expect(page.getByText('Regional / Sector regulator / TBD', { exact: true }).first()).toBeVisible();
+		await expect(page.getByText('City / Sub-city / Internal / Private', { exact: true }).first()).toBeVisible();
 
 		// And the four phase labels
 		await expect(page.getByText('Preparation', { exact: true })).toBeVisible();
@@ -35,8 +35,7 @@ test.describe('Journey screen', () => {
 		// Detail panel should appear (aside with role complementary-like heading)
 		await expect(page.getByText(/Key Metadata/i)).toBeVisible();
 
-		// Close via the X button in the panel header (first close button in the panel)
-		// Panel has an onclick close on its X icon div — press Escape on the doc to return home
+		// Press Escape on the document to return home.
 		await page.keyboard.press('Escape');
 		await expect(page).toHaveURL(/\/$|\/\??$/);
 	});
@@ -44,6 +43,6 @@ test.describe('Journey screen', () => {
 	test('invalid journey id redirects to home', async ({ page }) => {
 		await page.goto('/journey/this-does-not-exist');
 		await expect(page).toHaveURL(/\/$|\/\??$/);
-		await expect(page.getByRole('heading', { name: /Permit & License Journey Explorer/i })).toBeVisible();
+		await expect(page.getByRole('heading', { name: /Ethiopia Permit & Public Service Journey Explorer/i })).toBeVisible();
 	});
 });
