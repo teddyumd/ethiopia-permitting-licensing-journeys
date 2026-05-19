@@ -4,6 +4,8 @@
 	import { app } from '$lib/stores/app.svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
 	import { getJourneyApplicableAreaLabel } from '$lib/utils/applicableArea';
+	import { topoSort } from '$lib/utils/topoSort';
+	import type { PlcNode } from '$lib/types';
 	import MatrixGrid from './MatrixGrid.svelte';
 	import NodeDetailPanel from './NodeDetailPanel.svelte';
 	import ScreenSizeNotice from './ScreenSizeNotice.svelte';
@@ -18,6 +20,61 @@
 		journey
 			? getJourneyApplicableAreaLabel(journey.steps.map((id) => app.nodeMap[id]).filter(Boolean))
 			: ''
+	);
+	const journeyNodes = $derived.by<PlcNode[]>(() => {
+		if (!journey) return [];
+		return journey.steps
+			.map((id) => app.nodeMap[id])
+			.filter((node): node is PlcNode => Boolean(node));
+	});
+	const orderedSteps = $derived(
+		journey ? topoSort(journey.steps, journey.dependencies, app.nodeMap) : []
+	);
+	const firstStepName = $derived(orderedSteps.length > 0 ? app.nodeMap[orderedSteps[0]]?.name : null);
+	const audience = $derived(
+		journey?.cat.startsWith('individual-services-') ? 'Individual' : 'Business'
+	);
+	const beforeStartArea = $derived.by(() => {
+		const name = journey?.name.toLowerCase() ?? '';
+		if (name.includes('fayda') || name.includes('passport') || name.includes('police clearance')) {
+			return 'National / Federal service';
+		}
+		return 'Mapped primarily for Addis Ababa and/or federal service points. Regional applicability should be verified.';
+	});
+	const mainAgencies = $derived.by(() => {
+		const agencies: string[] = [];
+		const seen = new Set<string>();
+		for (const node of journeyNodes) {
+			const agency = node.agency?.trim();
+			if (!agency || seen.has(agency)) continue;
+			seen.add(agency);
+			agencies.push(agency);
+		}
+		return {
+			items: agencies.slice(0, 5),
+			hasMore: agencies.length > 5
+		};
+	});
+	const documentsToPrepare = $derived.by(() => {
+		const docs: string[] = [];
+		const seen = new Set<string>();
+		for (const node of journeyNodes) {
+			const match = node.description?.match(/Key requirements:\s*([^\n]+)/i);
+			if (!match) continue;
+			for (const item of match[1].split(';')) {
+				const doc = item.trim();
+				const key = doc.toLowerCase();
+				if (!doc || seen.has(key)) continue;
+				seen.add(key);
+				docs.push(doc);
+			}
+		}
+		return docs.slice(0, 6);
+	});
+	const verificationStatus = $derived(
+		journeyNodes.some((node) => node.description?.includes('Needs verification'))
+			? 'Needs verification'
+			: 'Draft'
 	);
 
 	const selectedNodeObj = $derived(app.selectedNode ? app.nodeMap[app.selectedNode] : null);
@@ -185,6 +242,66 @@
 
 		<!-- Matrix -->
 		<main class="flex-1 p-4 pt-0 md:p-8 md:pt-0 overflow-x-auto">
+			<section class="mt-6 p-4 md:p-5" style="background: var(--surface); border: 1px solid var(--ink);">
+				<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+					<div>
+						<h2 class="font-mono text-[11px] font-bold uppercase tracking-[0.2em]" style="color: var(--text);">Before You Start</h2>
+						<p class="font-body text-sm leading-relaxed mt-2 max-w-2xl" style="color: var(--text);">
+							Use this summary to check fit, starting point, offices, and draft status before reading the detailed journey map.
+						</p>
+					</div>
+					<a
+						href="{base}/contact?journey={encodeURIComponent(journey.name)}"
+						class="shrink-0 inline-flex px-3 py-2 font-mono text-[11px] uppercase tracking-[1.5px] no-underline hover:opacity-80 transition-opacity"
+						style="border: 1px solid var(--ink); color: var(--ink); background: var(--newsprint);"
+					>
+						Submit correction for this journey
+					</a>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5">
+					<div>
+						<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">Audience</span>
+						<p class="font-body text-sm font-semibold mt-1" style="color: var(--ink);">{audience}</p>
+					</div>
+					<div>
+						<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">Applicable area</span>
+						<p class="font-body text-sm mt-1" style="color: var(--ink);">{beforeStartArea}</p>
+					</div>
+					<div>
+						<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">First step</span>
+						<p class="font-body text-sm font-semibold mt-1" style="color: var(--ink);">{firstStepName ?? 'First step pending verification'}</p>
+					</div>
+					<div>
+						<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">Main office or offices</span>
+						<ul class="mt-1 flex flex-col gap-1">
+							{#each mainAgencies.items as agency (agency)}
+								<li class="font-body text-sm leading-snug" style="color: var(--ink);">{agency}</li>
+							{/each}
+							{#if mainAgencies.hasMore}
+								<li class="font-body text-sm leading-snug" style="color: var(--text);">and others.</li>
+							{/if}
+						</ul>
+					</div>
+					<div>
+						<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">Documents to prepare</span>
+						{#if documentsToPrepare.length > 0}
+							<ul class="mt-1 flex flex-col gap-1">
+								{#each documentsToPrepare as document (document)}
+									<li class="font-body text-sm leading-snug" style="color: var(--ink);">{document}</li>
+								{/each}
+							</ul>
+						{:else}
+							<p class="font-body text-sm mt-1" style="color: var(--ink);">Document requirements pending verification.</p>
+						{/if}
+					</div>
+					<div>
+						<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">Verification status</span>
+						<p class="font-body text-sm font-semibold mt-1" style="color: {verificationStatus === 'Needs verification' ? 'var(--severity-major)' : 'var(--ink)'};">{verificationStatus}</p>
+					</div>
+				</div>
+			</section>
+
 			<div class="mt-6">
 				<MatrixGrid {journey} {isMobile} />
 			</div>
