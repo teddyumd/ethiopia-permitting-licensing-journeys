@@ -14,6 +14,12 @@
 	const jurColor = $derived(JC[node.jurisdiction] ?? '#666');
 
 	const badge = $derived(stepIndex != null ? String(stepIndex + 1) : null);
+	const verificationStatus = $derived.by(() => {
+		if (!node.description) return null;
+		if (node.description.includes('Verification status: Needs verification')) return 'Needs verification';
+		if (node.description.includes('Verification status: Draft')) return 'Draft';
+		return null;
+	});
 
 </script>
 
@@ -34,6 +40,12 @@
 	<div class="font-body text-sm font-medium leading-tight mb-1.5" style="color: var(--ink);">
 		{node.name}
 	</div>
+	{#if verificationStatus}
+		<span
+			class="inline-block font-mono text-[8px] uppercase tracking-wider px-1 py-0.5 mb-1.5"
+			style="border: 1px solid var(--muted); color: {verificationStatus === 'Needs verification' ? 'var(--severity-major)' : 'var(--text)'};"
+		>{verificationStatus}</span>
+	{/if}
 	{#if node.estTime || node.blocking || node.renewalTerm}
 		<div class="font-mono text-[10px] space-y-0.5" style="color: var(--text);">
 			{#if node.estTime}

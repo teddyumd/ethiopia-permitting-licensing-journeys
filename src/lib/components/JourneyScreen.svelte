@@ -169,7 +169,7 @@
 			<div class="mt-6">
 				<MatrixGrid {journey} {isMobile} />
 			</div>
-			<SourcesPanel references={journey.references ?? []} />
+			<SourcesPanel {journey} references={journey.references ?? []} />
 		</main>
 
 		<!-- Node Detail Panel -->

@@ -38,6 +38,12 @@
 	});
 
 	const isEntry = $derived(deps.length > 0 && isEntryPoint(node.id, deps));
+	const verificationStatus = $derived.by(() => {
+		if (!node.description) return null;
+		if (node.description.includes('Verification status: Needs verification')) return 'Needs verification';
+		if (node.description.includes('Verification status: Draft')) return 'Draft';
+		return null;
+	});
 
 	const gotchasForNode = $derived(
 		app.activeJourney?.gotchas?.filter((g) => g.step === node.id) ?? []
@@ -102,6 +108,12 @@
 						class="px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider"
 						style="border: 1px solid var(--muted); color: var(--text);"
 					>Optional</span>
+				{/if}
+				{#if verificationStatus}
+					<span
+						class="px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider"
+						style="border: 1px solid var(--muted); color: {verificationStatus === 'Needs verification' ? 'var(--severity-major)' : 'var(--text)'};"
+					>{verificationStatus}</span>
 				{/if}
 			</div>
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -269,8 +281,7 @@
 		{/if}
 
 		<!-- Sources -->
-		{#if sourcesCount > 0}
-			<section class="pt-4" style="border-top: 1px solid var(--muted);">
+		<section class="pt-4" style="border-top: 1px solid var(--muted);">
 				<button
 					type="button"
 					onclick={() => (sourcesOpen = !sourcesOpen)}
@@ -288,6 +299,9 @@
 
 				{#if sourcesOpen}
 					<div class="mt-4 flex flex-col gap-5">
+						<p class="font-body text-sm leading-relaxed" style="color: var(--text);">
+							These references are used to support journey mapping and verification. The journeys are draft, illustrative, and should not be treated as legal advice or official instructions.
+						</p>
 						{#if node.source?.url}
 							<div>
 								<h5 class="font-mono text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style="color: var(--text);">
@@ -304,6 +318,12 @@
 										{node.source.title}
 									</a>
 								</div>
+							</div>
+						{:else}
+							<div class="py-1.5" style="border-bottom: 1px solid var(--muted);">
+								<span class="font-mono text-[10px] uppercase tracking-wider" style="color: var(--text);">
+									Source pending verification
+								</span>
 							</div>
 						{/if}
 
@@ -341,7 +361,6 @@
 					</div>
 				{/if}
 			</section>
-		{/if}
 	</div>
 </aside>
 
