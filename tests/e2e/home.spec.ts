@@ -14,6 +14,11 @@ test.describe('Home screen', () => {
 		await expect(page.getByRole('button', { name: 'Regional / Sector regulator / TBD', exact: true })).toBeVisible();
 		await expect(page.getByRole('button', { name: 'City / Sub-city / Internal / Private', exact: true })).toBeVisible();
 
+		// Audience filter buttons
+		await expect(page.getByRole('button', { name: 'All', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Business', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Individual', exact: true })).toBeVisible();
+
 		// Search box
 		await expect(page.getByPlaceholder(/Search journeys/i)).toBeVisible();
 	});
@@ -51,5 +56,22 @@ test.describe('Home screen', () => {
 
 		await page.getByRole('button', { name: /Clear all filters/i }).click();
 		await expect(page.getByRole('button', { name: /Clear all filters/i })).not.toBeVisible();
+	});
+
+	test('audience filter switches between all, business, and individual journeys', async ({ page }) => {
+		await page.goto('/');
+
+		await page.getByRole('button', { name: 'Business', exact: true }).click();
+		await expect(page.locator('text=/^\\s*11\\s*$/').first()).toBeVisible();
+		await expect(page.getByRole('button', { name: /Clear all filters/i })).toBeVisible();
+
+		await page.getByRole('button', { name: /Clear all filters/i }).click();
+		await expect(page.locator('text=/^\\s*27\\s*$/').first()).toBeVisible();
+
+		await page.getByRole('button', { name: 'Individual', exact: true }).click();
+		await expect(page.locator('text=/^\\s*16\\s*$/').first()).toBeVisible();
+
+		await page.getByRole('button', { name: 'All', exact: true }).click();
+		await expect(page.locator('text=/^\\s*27\\s*$/').first()).toBeVisible();
 	});
 });

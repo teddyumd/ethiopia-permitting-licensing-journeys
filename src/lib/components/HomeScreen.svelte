@@ -23,10 +23,21 @@
 		app.filterJurisdictions = [];
 		app.filterCategories = [];
 		app.filterSearch = '';
+		audienceFilter = 'all';
 	}
 
-	const filtered = $derived(app.filteredJourneys);
-	const hasFilters = $derived(app.filterJurisdictions.length > 0 || app.filterCategories.length > 0 || app.filterSearch.length > 0);
+	let audienceFilter = $state<'all' | 'business' | 'individual'>('all');
+
+	const filtered = $derived(app.filteredJourneys.filter((journey) => {
+		if (audienceFilter === 'individual') {
+			return journey.cat.startsWith('individual-services-');
+		}
+		if (audienceFilter === 'business') {
+			return !journey.cat.startsWith('individual-services-');
+		}
+		return true;
+	}));
+	const hasFilters = $derived(app.filterJurisdictions.length > 0 || app.filterCategories.length > 0 || app.filterSearch.length > 0 || audienceFilter !== 'all');
 </script>
 
 <div class="flex-1 overflow-hidden flex flex-col md:flex-row" style="background: var(--newsprint);">
@@ -79,6 +90,34 @@
 						style="border: 1px solid var(--ink); background: #fff; color: var(--ink); outline: none;"
 						bind:value={app.filterSearch}
 					/>
+				</div>
+
+				<!-- By Audience -->
+				<div>
+					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Audience</h3>
+					<div class="flex flex-wrap gap-2">
+						<button
+							class="px-3 py-1.5 font-mono text-[11px] tracking-wide transition-colors"
+							style="border: 1px solid {audienceFilter === 'all' ? 'var(--ink)' : 'var(--muted)'}; background: {audienceFilter === 'all' ? 'var(--ink)' : 'transparent'}; color: {audienceFilter === 'all' ? 'var(--surface)' : 'var(--text)'};"
+							onclick={() => audienceFilter = 'all'}
+						>
+							All
+						</button>
+						<button
+							class="px-3 py-1.5 font-mono text-[11px] tracking-wide transition-colors"
+							style="border: 1px solid {audienceFilter === 'business' ? 'var(--ink)' : 'var(--muted)'}; background: {audienceFilter === 'business' ? 'var(--ink)' : 'transparent'}; color: {audienceFilter === 'business' ? 'var(--surface)' : 'var(--text)'};"
+							onclick={() => audienceFilter = 'business'}
+						>
+							Business
+						</button>
+						<button
+							class="px-3 py-1.5 font-mono text-[11px] tracking-wide transition-colors"
+							style="border: 1px solid {audienceFilter === 'individual' ? 'var(--ink)' : 'var(--muted)'}; background: {audienceFilter === 'individual' ? 'var(--ink)' : 'transparent'}; color: {audienceFilter === 'individual' ? 'var(--surface)' : 'var(--text)'};"
+							onclick={() => audienceFilter = 'individual'}
+						>
+							Individual
+						</button>
+					</div>
 				</div>
 
 				<!-- By Jurisdiction -->
