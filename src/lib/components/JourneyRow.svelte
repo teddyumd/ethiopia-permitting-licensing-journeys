@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { app, JC } from '$lib/stores/app.svelte';
+	import { getJourneyApplicableAreaLabel } from '$lib/utils/applicableArea';
 	import type { Journey } from '$lib/types';
 
 	let { journey }: { journey: Journey } = $props();
@@ -17,6 +18,8 @@
 
 	const jurs = $derived(getJurisdictions(journey.steps));
 	const catLabel = $derived(app.catName[journey.cat] ?? journey.cat);
+	const stepNodes = $derived(journey.steps.map((id) => app.nodeMap[id]).filter(Boolean));
+	const applicableArea = $derived(getJourneyApplicableAreaLabel(stepNodes));
 </script>
 
 <button
@@ -27,6 +30,7 @@
 	<div class="flex flex-col gap-1">
 		<h2 class="font-body text-lg font-medium" style="color: var(--ink);">{journey.name}</h2>
 		<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">{catLabel}</span>
+		<span class="font-mono text-[10px] uppercase tracking-[1.5px]" style="color: var(--text);">Applicable area: {applicableArea}</span>
 	</div>
 	<div class="flex items-center gap-4">
 		<div class="flex items-center gap-1.5">

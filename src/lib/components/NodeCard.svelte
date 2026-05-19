@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { app, JC } from '$lib/stores/app.svelte';
+	import { getStepApplicableAreaLabel } from '$lib/utils/applicableArea';
 	import { getResponsibleLevelLabel } from '$lib/utils/responsibleLevel';
 	import type { PlcNode } from '$lib/types';
 
@@ -13,6 +14,7 @@
 
 	const jurColor = $derived(JC[node.jurisdiction] ?? '#666');
 	const responsibleLevel = $derived(getResponsibleLevelLabel(node));
+	const applicableArea = $derived(getStepApplicableAreaLabel(node));
 
 	const badge = $derived(stepIndex != null ? String(stepIndex + 1) : null);
 	const verificationStatus = $derived.by(() => {
@@ -49,6 +51,7 @@
 		<span class="font-mono text-[9px] leading-snug" style="color: var(--text);" title={node.agency ?? 'Responsible office pending'}>
 			{node.agency ?? 'Responsible office pending'}
 		</span>
+		<span class="font-mono text-[9px] leading-snug" style="color: var(--text);">Area: {applicableArea}</span>
 	</div>
 	{#if verificationStatus}
 		<span

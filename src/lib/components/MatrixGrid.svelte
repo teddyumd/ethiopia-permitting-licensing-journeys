@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { app, JC, PHASES, PHASE_LABELS, JURISDICTIONS_ORDER } from '$lib/stores/app.svelte';
+	import { app, JC, JURISDICTION_LABELS, PHASES, PHASE_LABELS, JURISDICTIONS_ORDER } from '$lib/stores/app.svelte';
 	import { computeMatrix } from '$lib/utils/matrix';
 	import { topoSort, buildAdjacency, isEntryPoint } from '$lib/utils/topoSort';
 	import { computeTopologicalLevels, minWeeksParallel } from '$lib/utils/topoLevels';
@@ -94,11 +94,7 @@
 
 	let gridEl: HTMLDivElement | undefined = $state();
 
-	const jurLabels: Record<string, string> = {
-		federal: 'Federal / National',
-		state: 'Regional / Sector regulator / TBD',
-		local: 'City / Sub-city / Internal / Private'
-	};
+	const jurLabels = JURISDICTION_LABELS;
 
 	let realisticStatus = $state({
 		day: 0,

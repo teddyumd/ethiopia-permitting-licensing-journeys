@@ -8,6 +8,12 @@ export const JC: Record<string, string> = {
 	local: '#8C5A46'
 };
 
+export const JURISDICTION_LABELS: Record<string, string> = {
+	federal: 'Federal',
+	state: 'Regional / State',
+	local: 'City / Local'
+};
+
 export const PHASE_LABELS: Record<string, { label: string; number: string }> = {
 	preparation: { label: 'Preparation', number: 'Phase 1' },
 	application: { label: 'Application', number: 'Phase 2' },

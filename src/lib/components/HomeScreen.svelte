@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { app } from '$lib/stores/app.svelte';
+	import { app, JURISDICTION_LABELS } from '$lib/stores/app.svelte';
 	import { RESPONSIBLE_LEVELS, type ResponsibleLevelId } from '$lib/utils/responsibleLevel';
 	import JourneyRow from './JourneyRow.svelte';
 
@@ -69,6 +69,9 @@
 			</h1>
 			<p class="font-body text-base leading-relaxed" style="color: var(--text);">
 				This explorer maps common business and individual public-service journeys in Ethiopia. Some journeys focus on starting and licensing a business, such as opening a consultancy, restaurant, pharmacy, clinic, retail shop, or logistics company. Others focus on everyday services individuals may need, such as opening a Fayda account, paying rental income tax, buying property, opening a bank account, registering a vehicle, getting a passport, or connecting utilities.
+			</p>
+			<p class="font-body text-sm leading-relaxed p-4" style="color: var(--text); border: 1px solid var(--muted); background: var(--surface);">
+				Applicable area note: this first version is primarily mapped for Addis Ababa and federal/national service points. Procedures may differ in Dire Dawa and regional states, and regional versions should be verified before relying on them outside Addis Ababa.
 			</p>
 			<div class="space-y-4">
 				<a href="{base}/methodology" class="font-mono text-xs uppercase tracking-[1.5px] underline hover:no-underline block" style="color: var(--text);">
@@ -158,7 +161,7 @@
 
 				<!-- By Jurisdiction -->
 				<div>
-					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Broad Data Group</h3>
+					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Jurisdiction</h3>
 					<div class="flex flex-wrap gap-2">
 						{#each app.jurisdictions as jurisdiction (jurisdiction.id)}
 							<button
@@ -166,7 +169,7 @@
 								style="border: 1px solid {app.filterJurisdictions.includes(jurisdiction.id) ? 'var(--ink)' : 'var(--muted)'}; background: {app.filterJurisdictions.includes(jurisdiction.id) ? 'var(--ink)' : 'transparent'}; color: {app.filterJurisdictions.includes(jurisdiction.id) ? 'var(--surface)' : 'var(--text)'};"
 								onclick={() => toggleJurisdiction(jurisdiction.id)}
 							>
-								{jurisdiction.name}
+								{JURISDICTION_LABELS[jurisdiction.id] ?? jurisdiction.name}
 							</button>
 						{/each}
 					</div>

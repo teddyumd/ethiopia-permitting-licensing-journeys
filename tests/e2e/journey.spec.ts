@@ -12,9 +12,9 @@ test.describe('Journey screen', () => {
 		await expect(page.getByRole('heading', { name: journeyName })).toBeVisible();
 
 		// Matrix has Ethiopia dataset jurisdiction row headers
-		await expect(page.getByText('Federal / National', { exact: true }).first()).toBeVisible();
-		await expect(page.getByText('Regional / Sector regulator / TBD', { exact: true }).first()).toBeVisible();
-		await expect(page.getByText('City / Sub-city / Internal / Private', { exact: true }).first()).toBeVisible();
+		await expect(page.getByText('Federal', { exact: true }).first()).toBeVisible();
+		await expect(page.getByText('Regional / State', { exact: true }).first()).toBeVisible();
+		await expect(page.getByText('City / Local', { exact: true }).first()).toBeVisible();
 
 		// And the four phase labels
 		await expect(page.getByText('Preparation', { exact: true })).toBeVisible();

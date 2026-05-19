@@ -63,6 +63,9 @@
 			<p class="font-body text-lg md:text-xl leading-relaxed max-w-[600px] opacity-70 mb-4">
 				This is a draft public-service journey mapping tool for Ethiopia. It covers both business journeys and individual public-service journeys, mapped from the user's point of view rather than by government hierarchy.
 			</p>
+			<p class="font-body text-sm md:text-base leading-relaxed max-w-[600px] opacity-70 mb-4">
+				Most journeys in this first version are mapped for Addis Ababa and federal/national service points. Procedures may differ in Dire Dawa and regional states. Regional versions should be verified before being treated as applicable outside Addis Ababa.
+			</p>
 			<p class="font-mono text-[10px] uppercase tracking-[2px] opacity-50 mb-12 md:mb-16">
 				Draft dataset &mdash; under verification
 			</p>

@@ -2,6 +2,7 @@
 	import { app, JC } from '$lib/stores/app.svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
 	import { isEntryPoint } from '$lib/utils/topoSort';
+	import { getStepApplicableAreaLabel } from '$lib/utils/applicableArea';
 	import { getResponsibleLevelLabel } from '$lib/utils/responsibleLevel';
 	import type { PlcNode, Dependency, Reference } from '$lib/types';
 
@@ -11,6 +12,7 @@
 
 	const jurColor = $derived(JC[node.jurisdiction] ?? '#666');
 	const responsibleLevel = $derived(getResponsibleLevelLabel(node));
+	const applicableArea = $derived(getStepApplicableAreaLabel(node));
 
 	const deps = $derived(app.activeJourney?.dependencies ?? []);
 
@@ -116,6 +118,10 @@
 						style="border: 1px solid var(--muted); color: {verificationStatus === 'Needs verification' ? 'var(--severity-major)' : 'var(--text)'};"
 					>{verificationStatus}</span>
 				{/if}
+				<span
+					class="px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider"
+					style="border: 1px solid var(--muted); color: var(--text);"
+				>Area: {applicableArea}</span>
 			</div>
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<!-- svelte-ignore a11y_no_static_element_interactions -->

@@ -3,6 +3,7 @@
 	import { base } from '$app/paths';
 	import { app } from '$lib/stores/app.svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
+	import { getJourneyApplicableAreaLabel } from '$lib/utils/applicableArea';
 	import MatrixGrid from './MatrixGrid.svelte';
 	import NodeDetailPanel from './NodeDetailPanel.svelte';
 	import ScreenSizeNotice from './ScreenSizeNotice.svelte';
@@ -13,6 +14,11 @@
 	const journey = $derived(app.activeJourney);
 
 	const catLabel = $derived(journey ? (app.catName[journey.cat] ?? journey.cat) : '');
+	const applicableArea = $derived(
+		journey
+			? getJourneyApplicableAreaLabel(journey.steps.map((id) => app.nodeMap[id]).filter(Boolean))
+			: ''
+	);
 
 	const selectedNodeObj = $derived(app.selectedNode ? app.nodeMap[app.selectedNode] : null);
 	const selectedStepIndex = $derived(
@@ -87,6 +93,12 @@
 				<h1 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mt-1 line-clamp-2" style="color: var(--ink);">
 					{journey.name}
 				</h1>
+				<div class="mt-3 flex flex-wrap gap-2">
+					<span
+						class="px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider"
+						style="border: 1px solid var(--muted); color: var(--text);"
+					>Applicable area: {applicableArea}</span>
+				</div>
 				<a
 					href="{base}/contact?journey={encodeURIComponent(journey.name)}"
 					class="inline-flex mt-3 px-3 py-2 font-mono text-[11px] uppercase tracking-[1.5px] no-underline hover:opacity-80 transition-opacity"

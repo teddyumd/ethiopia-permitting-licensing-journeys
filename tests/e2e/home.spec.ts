@@ -16,11 +16,11 @@ test.describe('Home screen', () => {
 		await expect(page.getByRole('button', { name: 'Private / Non-government Actor', exact: true })).toBeVisible();
 		await expect(page.getByRole('button', { name: 'Applicant / Internal Action', exact: true })).toBeVisible();
 
-		// Broad data group filter buttons
-		await expect(page.getByText('By Broad Data Group', { exact: true })).toBeVisible();
-		await expect(page.getByRole('button', { name: 'Federal / National', exact: true }).nth(1)).toBeVisible();
-		await expect(page.getByRole('button', { name: 'Regional / Sector regulator / TBD', exact: true })).toBeVisible();
-		await expect(page.getByRole('button', { name: 'City / Sub-city / Internal / Private', exact: true })).toBeVisible();
+		// Jurisdiction filter buttons
+		await expect(page.getByText('By Jurisdiction', { exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Federal', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Regional / State', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'City / Local', exact: true })).toBeVisible();
 
 		// Audience filter buttons
 		await expect(page.getByRole('button', { name: 'All', exact: true })).toBeVisible();
@@ -56,7 +56,7 @@ test.describe('Home screen', () => {
 
 	test('jurisdiction filter toggles and affects the visible count', async ({ page }) => {
 		await page.goto('/');
-		const federal = page.getByRole('button', { name: 'Federal / National', exact: true }).nth(1);
+		const federal = page.getByRole('button', { name: 'Federal', exact: true });
 
 		await federal.click();
 		// "Clear all filters" appears once a filter is active
