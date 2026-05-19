@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { app, JC } from '$lib/stores/app.svelte';
+	import { getResponsibleLevelLabel } from '$lib/utils/responsibleLevel';
 	import type { PlcNode } from '$lib/types';
 
 	let { node, stepIndex, mobile = false }: { node: PlcNode; stepIndex?: number; mobile?: boolean } = $props();
@@ -10,8 +11,8 @@
 
 	const isSelected = $derived(app.selectedNode === node.id);
 
-	const jurLabel = $derived(node.jurisdiction.charAt(0).toUpperCase() + node.jurisdiction.slice(1));
 	const jurColor = $derived(JC[node.jurisdiction] ?? '#666');
+	const responsibleLevel = $derived(getResponsibleLevelLabel(node));
 
 	const badge = $derived(stepIndex != null ? String(stepIndex + 1) : null);
 	const verificationStatus = $derived.by(() => {
@@ -39,6 +40,15 @@
 	{/if}
 	<div class="font-body text-sm font-medium leading-tight mb-1.5" style="color: var(--ink);">
 		{node.name}
+	</div>
+	<div class="mb-1.5 flex flex-col gap-1">
+		<span
+			class="inline-block w-fit font-mono text-[8px] uppercase tracking-wider px-1 py-0.5"
+			style="border: 1px solid {jurColor}; color: {jurColor};"
+		>{responsibleLevel}</span>
+		<span class="font-mono text-[9px] leading-snug" style="color: var(--text);" title={node.agency ?? 'Responsible office pending'}>
+			{node.agency ?? 'Responsible office pending'}
+		</span>
 	</div>
 	{#if verificationStatus}
 		<span

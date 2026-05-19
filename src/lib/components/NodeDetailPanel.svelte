@@ -2,14 +2,15 @@
 	import { app, JC } from '$lib/stores/app.svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
 	import { isEntryPoint } from '$lib/utils/topoSort';
+	import { getResponsibleLevelLabel } from '$lib/utils/responsibleLevel';
 	import type { PlcNode, Dependency, Reference } from '$lib/types';
 
 	const isMobile = new IsMobile();
 
 	let { node, stepIndex, totalSteps }: { node: PlcNode; stepIndex?: number; totalSteps?: number } = $props();
 
-	const jurLabel = $derived(node.jurisdiction.charAt(0).toUpperCase() + node.jurisdiction.slice(1));
 	const jurColor = $derived(JC[node.jurisdiction] ?? '#666');
+	const responsibleLevel = $derived(getResponsibleLevelLabel(node));
 
 	const deps = $derived(app.activeJourney?.dependencies ?? []);
 
@@ -97,7 +98,7 @@
 				<span
 					class="px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider"
 					style="border: 1px solid {jurColor}; color: {jurColor};"
-				>{jurLabel} Jurisdiction</span>
+				>{responsibleLevel}</span>
 				{#if node.required !== false}
 					<span
 						class="px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider"
@@ -130,9 +131,9 @@
 		</div>
 		<div>
 			<h3 class="font-body text-2xl md:text-3xl font-bold leading-tight" style="color: var(--ink);">{node.name}</h3>
-			{#if node.agency}
-				<p class="font-mono text-xs mt-3 tracking-wide uppercase" style="color: var(--text);">{node.agency}</p>
-			{/if}
+			<p class="font-mono text-xs mt-3 tracking-wide uppercase" style="color: var(--text);">
+				{node.agency ?? 'Responsible office pending'}
+			</p>
 		</div>
 	</div>
 

@@ -9,8 +9,16 @@ test.describe('Home screen', () => {
 		// Total count header
 		await expect(page.locator('text=/^\\s*27\\s*$/').first()).toBeVisible();
 
-		// Jurisdiction filter buttons
-		await expect(page.getByRole('button', { name: 'Federal / National', exact: true })).toBeVisible();
+		// Responsible level filter buttons
+		await expect(page.getByText('By Responsible Level', { exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Federal / National', exact: true }).first()).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Addis Ababa City Administration', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Private / Non-government Actor', exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Applicant / Internal Action', exact: true })).toBeVisible();
+
+		// Broad data group filter buttons
+		await expect(page.getByText('By Broad Data Group', { exact: true })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Federal / National', exact: true }).nth(1)).toBeVisible();
 		await expect(page.getByRole('button', { name: 'Regional / Sector regulator / TBD', exact: true })).toBeVisible();
 		await expect(page.getByRole('button', { name: 'City / Sub-city / Internal / Private', exact: true })).toBeVisible();
 
@@ -48,7 +56,7 @@ test.describe('Home screen', () => {
 
 	test('jurisdiction filter toggles and affects the visible count', async ({ page }) => {
 		await page.goto('/');
-		const federal = page.getByRole('button', { name: 'Federal / National', exact: true });
+		const federal = page.getByRole('button', { name: 'Federal / National', exact: true }).nth(1);
 
 		await federal.click();
 		// "Clear all filters" appears once a filter is active
@@ -56,6 +64,17 @@ test.describe('Home screen', () => {
 
 		await page.getByRole('button', { name: /Clear all filters/i }).click();
 		await expect(page.getByRole('button', { name: /Clear all filters/i })).not.toBeVisible();
+	});
+
+	test('responsible level filter works with clear filters', async ({ page }) => {
+		await page.goto('/');
+
+		await page.getByRole('button', { name: 'Private / Non-government Actor', exact: true }).click();
+		await expect(page.getByRole('button', { name: /Clear all filters/i })).toBeVisible();
+		await expect(page.locator('button.journey-row').first()).toBeVisible();
+
+		await page.getByRole('button', { name: /Clear all filters/i }).click();
+		await expect(page.locator('text=/^\\s*27\\s*$/').first()).toBeVisible();
 	});
 
 	test('audience filter switches between all, business, and individual journeys', async ({ page }) => {

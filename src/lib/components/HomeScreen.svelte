@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { app } from '$lib/stores/app.svelte';
+	import { RESPONSIBLE_LEVELS, type ResponsibleLevelId } from '$lib/utils/responsibleLevel';
 	import JourneyRow from './JourneyRow.svelte';
 
 	function toggleJurisdiction(jur: string) {
@@ -19,9 +20,18 @@
 		}
 	}
 
+	function toggleResponsibleLevel(level: ResponsibleLevelId) {
+		if (app.filterResponsibleLevels.includes(level)) {
+			app.filterResponsibleLevels = app.filterResponsibleLevels.filter((l) => l !== level);
+		} else {
+			app.filterResponsibleLevels = [...app.filterResponsibleLevels, level];
+		}
+	}
+
 	function clearFilters() {
 		app.filterJurisdictions = [];
 		app.filterCategories = [];
+		app.filterResponsibleLevels = [];
 		app.filterSearch = '';
 		audienceFilter = 'all';
 	}
@@ -40,7 +50,7 @@
 	const availableCategoryIds = $derived(new Set(audienceJourneys.map((journey) => journey.cat)));
 	const availableCategories = $derived(app.categories.filter((cat) => availableCategoryIds.has(cat.id)));
 	const filtered = $derived(app.filteredJourneys.filter((journey) => availableCategoryIds.has(journey.cat)));
-	const hasFilters = $derived(app.filterJurisdictions.length > 0 || app.filterCategories.length > 0 || app.filterSearch.length > 0 || audienceFilter !== 'all');
+	const hasFilters = $derived(app.filterJurisdictions.length > 0 || app.filterCategories.length > 0 || app.filterResponsibleLevels.length > 0 || app.filterSearch.length > 0 || audienceFilter !== 'all');
 
 	$effect(() => {
 		const nextCategories = app.filterCategories.filter((cat) => availableCategoryIds.has(cat));
@@ -130,9 +140,25 @@
 					</div>
 				</div>
 
+				<!-- By Responsible Level -->
+				<div>
+					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Responsible Level</h3>
+					<div class="flex flex-wrap gap-2">
+						{#each RESPONSIBLE_LEVELS as level (level.id)}
+							<button
+								class="px-3 py-1.5 font-mono text-[11px] tracking-wide transition-colors"
+								style="border: 1px solid {app.filterResponsibleLevels.includes(level.id) ? 'var(--ink)' : 'var(--muted)'}; background: {app.filterResponsibleLevels.includes(level.id) ? 'var(--ink)' : 'transparent'}; color: {app.filterResponsibleLevels.includes(level.id) ? 'var(--surface)' : 'var(--text)'};"
+								onclick={() => toggleResponsibleLevel(level.id)}
+							>
+								{level.label}
+							</button>
+						{/each}
+					</div>
+				</div>
+
 				<!-- By Jurisdiction -->
 				<div>
-					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Jurisdiction</h3>
+					<h3 class="font-mono text-[10px] uppercase tracking-[2px] mb-3" style="color: var(--text);">By Broad Data Group</h3>
 					<div class="flex flex-wrap gap-2">
 						{#each app.jurisdictions as jurisdiction (jurisdiction.id)}
 							<button

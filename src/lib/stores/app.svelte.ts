@@ -1,4 +1,5 @@
 import type { Journey, PlcNode, Category, Jurisdiction } from '$lib/types';
+import { getResponsibleLevel, type ResponsibleLevelId } from '$lib/utils/responsibleLevel';
 
 // Jurisdiction colors (editorial palette)
 export const JC: Record<string, string> = {
@@ -27,6 +28,7 @@ let _legendOpen = $state(false);
 // Filters
 let _filterJurisdictions = $state<string[]>([]);
 let _filterCategories = $state<string[]>([]);
+let _filterResponsibleLevels = $state<ResponsibleLevelId[]>([]);
 let _filterSearch = $state('');
 
 // Data
@@ -56,6 +58,8 @@ export const app = {
 	set filterJurisdictions(v) { _filterJurisdictions = v; },
 	get filterCategories() { return _filterCategories; },
 	set filterCategories(v) { _filterCategories = v; },
+	get filterResponsibleLevels() { return _filterResponsibleLevels; },
+	set filterResponsibleLevels(v) { _filterResponsibleLevels = v; },
 	get filterSearch() { return _filterSearch; },
 	set filterSearch(v) { _filterSearch = v; },
 
@@ -85,6 +89,13 @@ export const app = {
 					return node && _filterJurisdictions.includes(node.jurisdiction);
 				});
 				if (!hasJur) return false;
+			}
+			if (_filterResponsibleLevels.length > 0) {
+				const hasResponsibleLevel = j.steps.some(s => {
+					const node = _nodeMap[s];
+					return node && _filterResponsibleLevels.includes(getResponsibleLevel(node));
+				});
+				if (!hasResponsibleLevel) return false;
 			}
 			return true;
 		});
