@@ -86,7 +86,7 @@
 				</button>
 			</div>
 		{:else}
-			<form onsubmit={handleSubmit} class="space-y-6">
+			<form method="POST" onsubmit={handleSubmit} class="space-y-6">
 				<div>
 					<label for="name" class="font-mono text-[10px] uppercase tracking-[2px] block mb-2" style="color: var(--text);">
 						Name
