@@ -88,14 +88,6 @@
 					>
 						Share feedback &rarr;
 					</a>
-					<a
-						href="https://github.com/teddyumd/ethiopia-permitting-licensing-journeys"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="cta-outline px-4 py-2.5 font-mono text-[11px] uppercase tracking-[1.5px] no-underline transition-colors"
-					>
-						View on GitHub
-					</a>
 				</div>
 			</div>
 
